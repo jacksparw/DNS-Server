@@ -1,0 +1,4 @@
+We will use jcowey/dnsmasq-arm docker image to create our DNS server. (https://hub.docker.com/r/jcowey/dnsmasq-arm)
+
+docker run -p 53:53/tcp -p 53:53/udp -p 8080:8080 --cap-add=NET_ADMIN jcowey/dnsmasq-arm
+
