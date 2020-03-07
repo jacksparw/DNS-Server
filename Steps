@@ -1,12 +1,14 @@
 We will use jcowey/dnsmasq-arm docker image to create our DNS server. (https://hub.docker.com/r/jcowey/dnsmasq-arm)
 
+******************************************** Step 1 **********************************************************
+
 docker run -p 53:53/tcp -p 53:53/udp -p 8080:8080 --cap-add=NET_ADMIN jcowey/dnsmasq-arm
 
-******************************************************************************************************
+******************************************** Step 2 **********************************************************
 
 Go to http://localhost:8080 (It will open dnsmasq console)
 
-******************************************************************************************************
+******************************************** Step 3 **********************************************************
 add below DNS entry (This is custom DNS entry for Eureka server):
 
 domain-needed
@@ -28,7 +30,7 @@ txt-record=txt.sweden.eureka.storytel,10.10.10.21,10.10.10.22,10.10.10.23
 
 Save and Restart from console and you are ready
 
-************************************************************************************************************
+********************************************** Step 4 **************************************************************
 
 Once we have our container up and running we can then use the DNS from other servers on the network. To verify use dig command
 
@@ -67,6 +69,8 @@ Note for Windows Users: Use below steps to use above command
 
 * Download latest BIND utility from url https://ftp.isc.org/isc/bind9
 * Unzip to a location, open cmd and go to that location and run above command
+
+_________________________________________________________________________________________________
 
 Useful Links to setup DNS in Eureka: 
 https://blog.csainty.com/2016/09/running-dnsmasq-in-docker.html
