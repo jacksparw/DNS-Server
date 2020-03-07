@@ -54,7 +54,7 @@ txt.global.eureka.storytel. 0       IN      TXT     "sweden.eureka.storytel"
 ;; WHEN: Sat Mar 07 21:24:16 India Standard Time 2020
 ;; MSG SIZE  rcvd: 90
 
-You can aslo use nslookup for verfification, run below command. 
+You can also use nslookup for verfification, run below command. 
 
 $ nslookup 001.etcd.storytel localhost
 Server:         localhost
