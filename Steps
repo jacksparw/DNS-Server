@@ -2,3 +2,73 @@ We will use jcowey/dnsmasq-arm docker image to create our DNS server. (https://h
 
 docker run -p 53:53/tcp -p 53:53/udp -p 8080:8080 --cap-add=NET_ADMIN jcowey/dnsmasq-arm
 
+******************************************************************************************************
+
+Go to http://localhost:8080 (It will open dnsmasq console)
+
+******************************************************************************************************
+add below DNS entry (This is custom DNS entry for Eureka server):
+
+domain-needed
+bogus-priv
+no-hosts
+keep-in-foreground
+no-resolv
+expand-hosts
+server=8.8.8.8
+server=8.8.4.4
+address=/001.etcd.storytel/10.10.10.21
+address=/002.etcd.storytel/10.10.10.22
+address=/003.etcd.storytel/10.10.10.23
+address=/001.eureka.storytel/10.10.10.21
+address=/002.eureka.storytel/10.10.10.22
+address=/003.eureka.storytel/10.10.10.23
+txt-record=txt.global.eureka.storytel,sweden.eureka.storytel
+txt-record=txt.sweden.eureka.storytel,10.10.10.21,10.10.10.22,10.10.10.23
+
+Save and Restart from console and you are ready
+
+************************************************************************************************************
+
+Once we have our container up and running we can then use the DNS from other servers on the network. To verify use dig command
+
+$ dig @localhost TXT txt.global.eureka.storytel
+
+; <<>> DiG 9.10.2-P4 <<>> @10.10.10.1 TXT txt.global.eureka.storytel
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 13897
+;; flags: qr aa rd ra ad; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+;; QUESTION SECTION:
+;txt.global.eureka.storytel.        IN      TXT
+
+;; ANSWER SECTION:
+txt.global.eureka.storytel. 0       IN      TXT     "sweden.eureka.storytel"
+
+;; Query time: 7 msec
+;; SERVER: 127.0.0.1#53(127.0.0.1)
+;; WHEN: Sat Mar 07 21:24:16 India Standard Time 2020
+;; MSG SIZE  rcvd: 90
+
+You can aslo use nslookup for verfification, run below command. 
+
+$ nslookup 001.etcd.storytel localhost
+Server:         localhost
+Address:        127.0.0.1#53
+
+Name:   001.etcd.storytel
+Address: 10.10.10.21
+
+Note for Windows Users: Use below steps to use above command 
+
+* Download latest BIND utility from url https://ftp.isc.org/isc/bind9
+* Unzip to a location, open cmd and go to that location and run above command
+
+Useful Links to setup DNS in Eureka: 
+https://blog.csainty.com/2016/09/running-dnsmasq-in-docker.html
+https://www.todaysoftmag.com/article/1429/micro-service-discovery-using-netflix-eureka
+
